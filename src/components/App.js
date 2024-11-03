@@ -1,5 +1,6 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+import InputFormLocal from './InputFormLocal';
+import InputFormRemote from './InputFormRemote';
 
 const getMedia = async () => {
   const constraints = { audio: true, video: true };
@@ -16,7 +17,10 @@ const getMedia = async () => {
 getMedia();
 
 const App = () => {
-  return <Button color="orange" variant="outlined">Hello, world!</Button>;
+  return <>
+    <InputFormLocal />
+    <InputFormRemote />
+  </>
 }
 
 export default App;
