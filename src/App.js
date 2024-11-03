@@ -1,6 +1,5 @@
 import React from 'react';
-
-
+import Button from '@mui/material/Button';
 
 const getMedia = async () => {
   const constraints = { audio: true, video: true };
@@ -17,7 +16,7 @@ const getMedia = async () => {
 getMedia();
 
 const App = () => {
-  return <div>Hello, React!</div>;
+  return <Button color="orange" variant="outlined">Hello, world!</Button>;
 }
 
 export default App;
