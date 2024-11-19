@@ -25,10 +25,10 @@ const App = () => {
       localPeerName={localPeerName}
       setLocalPeerName={setLocalPeerName}
     />
-    {/* <InputFormRemote
+    <InputFormRemote
       remotePeerName={remotePeerName}
       setRemotePeerName={setRemotePeerName}
-    /> */}
+    />
   </>
 }
 
