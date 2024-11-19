@@ -53,64 +53,25 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props) {
+export default function SignIn({ localPeerName, setLocalPeerName }) {
 
   const label = '당신의 이름'
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [name, setName] = React.useState('')
+  const [disabled, setDisabled] = React.useState(true)
+  const [isComposed, setIsComposed] = React.useState(false)
+  React.useEffect(() => {
+    setDisabled(name === "")
+  }, [name])
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const initializeLocalPeer = React.useCallback((e) => {
+    setLocalPeerName(name);
+    e.preventDefault();
+  }, [name, setLocalPeerName]);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-
-  const validateInputs = () => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
-
-    return isValid;
-  };
+  if (localPeerName !== "") return <></>
 
   return (
-    <AppTheme {...props}>
+    <AppTheme >
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography
@@ -124,21 +85,28 @@ export default function SignIn(props) {
             <FormLabel htmlFor="name">이름</FormLabel>
             <TextField
               autoFocus
-              color={emailError ? 'error' : 'primary'}
-              error={emailError}
               fullWidth
-              helperText={emailErrorMessage}
               name="name"
               placeholder={label}
               required
               sx={{ ariaLabel: 'name' }}
+              onChange={(e) => setName(e.target.value)}
+              onCompositionEnd={() => setIsComposed(false)}
+              onCompositionStart={() => setIsComposed(true)}
+              onKeyDown={(e) => {
+                if (isComposed) return;
+                if (e.target.value === '') return;
+                if (e.key === "Enter")
+                  initializeLocalPeer(e);
+
+              }}
               type="text"
+              value={name}
               variant="outlined"
             />
           </FormControl>
           <Box
             component="form"
-            onSubmit={handleSubmit}
             noValidate
             sx={{
               display: 'flex',
@@ -150,13 +118,16 @@ export default function SignIn(props) {
             <Button
               type="submit"
               fullWidth
-              variant="contained"
-              onClick={validateInputs}
+              disabled={disabled}
+              variant="outlined"
+              onClick={(e) =>
+                initializeLocalPeer(e)
+              }
             >
               결정
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
-              Don&apos;t have an account?{' '}
+              Don't have an account?{' '}
               <span>
                 <Link
                   href="/material-ui/getting-started/templates/sign-in/"

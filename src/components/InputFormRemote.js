@@ -53,7 +53,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props) {
+export default function SignIn({ remotePeerName, setRemotePeerName }) {
 
   const label = '상대방의 이름'
   const [emailError, setEmailError] = React.useState(false);
@@ -110,7 +110,7 @@ export default function SignIn(props) {
   };
 
   return (
-    <AppTheme {...props}>
+    <AppTheme >
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography
