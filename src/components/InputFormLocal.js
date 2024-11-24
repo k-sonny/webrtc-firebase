@@ -59,6 +59,7 @@ export default function SignIn({ localPeerName, setLocalPeerName }) {
   const [name, setName] = React.useState('')
   const [disabled, setDisabled] = React.useState(true)
   const [isComposed, setIsComposed] = React.useState(false)
+
   React.useEffect(() => {
     setDisabled(name === "")
   }, [name])
@@ -98,7 +99,6 @@ export default function SignIn({ localPeerName, setLocalPeerName }) {
                 if (e.target.value === '') return;
                 if (e.key === "Enter")
                   initializeLocalPeer(e);
-
               }}
               type="text"
               value={name}
