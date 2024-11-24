@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
 import InputFormLocal from './InputFormLocal';
 import InputFormRemote from './InputFormRemote';
+import VideoArea from './VideoArea'
 
-const getMedia = async () => {
-  const constraints = { audio: true, video: true };
 
-  try {
-    return await navigator.mediaDevices.getUserMedia(constraints);
-    /* use the stream */
-  } catch (err) {
-    /* handle the error */
-    console.error("------------------------", err);
-  }
-}
-
-getMedia();
 
 const App = () => {
   const [localPeerName, setLocalPeerName] = useState('');
@@ -30,6 +19,10 @@ const App = () => {
       localPeerName={localPeerName}
       remotePeerName={remotePeerName}
       setRemotePeerName={setRemotePeerName}
+    />
+    <VideoArea
+      localPeerName={localPeerName}
+      remotePeerName={remotePeerName}
     />
   </>
 }
